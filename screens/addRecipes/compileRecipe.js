@@ -4,7 +4,7 @@ import { View, Text, FlatList, Image, StyleSheet, ScrollView, TextInput, Pressab
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import MyTextInput from '../../components/TextInput';
 import Autocomplete from '../../components/Autocomplete';
-
+import MyTimePicker from '../../components/TimePicker';
 
 const CompileRecipe = ({ user, isLoggedIn, recipe, setRecipe, showCategories, handleShowCategories, starsSelected, setStarsSelected, createRecipe, got }) => {
   const [imageRecipe, setImageRecipe] = useState(require('../../assets/user.png'));
@@ -120,24 +120,45 @@ const CompileRecipe = ({ user, isLoggedIn, recipe, setRecipe, showCategories, ha
           onChangeText={(value) => handleInputChange('description', value)}
           placeholder="Descrizione"
         />
-          <Autocomplete
-            myStyle={{ width: 300, marginTop: 20 }}
-            defaultValue='ciao'
-            onChangeText={(value) => handleInputChange('ingredients', value)}
-          />
+        <Autocomplete
+          myStyle={{ width: 300, marginTop: 20 }}
+          defaultValue='ciao'
+          onChangeText={(value) => handleInputChange('ingredients', value)}
+        />
         <MyTextInput
           myStyle={{ width: 300, marginTop: 20 }}
           value={recipe.preparation}
           onChangeText={(value) => handleInputChange('preparation', value)}
           placeholder="Preparazione"
         />
-        <MyTextInput
-          myStyle={{ width: 300, marginTop: 20 }}
-          value={recipe.time}
-          keyboardType="numeric"
-          onChangeText={(value) => handleInputChange('time', value)}
-          placeholder="Tempo"
-        />
+          
+          <Text style={{marginTop: 10, textAlign: 'center'}}>Inserisci il tempo di preparazione:</Text>
+        <View style={styles.containerTime}>
+          <MyTimePicker
+            style={styles.TimeBlocks}
+            value={recipe.ore}
+            keyboardType="numeric"
+            onChangeText={(value) => handleInputChange('time', value)}
+            placeholder="h"
+          />
+
+          <MyTimePicker
+            style={styles.TimeBlocks}
+            value={recipe.minuti}
+            keyboardType="numeric"
+            onChangeText={(value) => handleInputChange('time', value)}
+            placeholder="m"
+          />
+
+          <MyTimePicker
+            style={styles.TimeBlocks}
+            value={recipe.secondi}
+            keyboardType="numeric"
+            onChangeText={(value) => handleInputChange('time', value)}
+            placeholder="s"
+          />
+        </View>
+
         <Pressable
           style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "33%" }}
           onPress={() => handleInputChange('gluten', !recipe.gluten)}
@@ -208,6 +229,16 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 100,
   },
+  TimeBlocks: {
+    padding: 10,
+  },
+  containerTime: {
+    flexDirection: 'row',
+    marginTop: 30,
+    width: 80,
+    display: 'flex',
+    justifyContent: 'center',
+  }
 });
 
 export default CompileRecipe
