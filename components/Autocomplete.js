@@ -180,7 +180,7 @@ const SquareUnit = ({ ingredient, setIngredient }) => {
 
   return (
     <View style={{ width: '40%', flex: 1 }}>
-      <RNSingleSelect width={'100%'} height={45} menuBarContainerWidth={60} menuBarContainerBackgroundColor={'#f8f4fc'}
+      <RNSingleSelect width={75} height={45} menuBarContainerWidth={60} menuBarContainerBackgroundColor={'#f8f4fc'}
         buttonContainerStyle={{ borderRadius: 0, borderTopLeftRadius: 0, backgroundColor: '#f8f4fc', borderWidth: 1, borderColor: 'grey' }}
         placeholderTextStyle={{ fontSize: 12, color: 'black', padding: 0, margin: 0, width: 25, right: 10, textAlign: 'center', width: '100%' }}
         menuItemTextStyle={{ fontSize: 12, padding: 0, margin: 0 }}
