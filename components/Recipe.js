@@ -47,19 +47,16 @@ const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipe
 
       {/* Sovrapposizione nera per scurire l'immagine */}
       <View style={styles.overlay}></View>
-
-      {/* Contenitore per il testo e i pulsanti */}
-      <View style={styles.textContainer}>
-        {/* Box come sfondo di item.category */}
-        <View style={styles.categoryBackground} />
+      {/* Box come sfondo di item.category */}
+      <View style={styles.categoryBackground} >
         {/* <View style={styles.UnderText}/> */}
 
         <Text style={{ color: 'white', textAlign: 'center', fontSize: 40, fontWeight: 'bold' }}>{item.category}</Text>
         <Text style={{ color: 'white', textAlign: 'center', fontSize: 25, fontWeight: 'bold', width: '80%' }}>{item.title}</Text>
-        <Text style={{ color: 'white', textAlign: 'center', width: '80%' }}>{item.description!=undefined ? item.description.length > 200 ? item.description.slice(0, 200) + '...' : item.description : null}</Text>
-        <Text style={{ color: 'white', textAlign: 'center' }}>{item.likes + userFavouriteRecipes.includes(item.id)}</Text>
+        <Text style={{ color: 'white', textAlign: 'center', width: '80%' }}>{item.description != undefined ? item.description.length > 100 ? item.description.slice(0, 100) + '...' : item.description : null}</Text>
         <Text style={{ color: 'white', textAlign: 'center' }}>{item.creator_username}</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 100 }}>
+        <Text style={{ color: 'white', textAlign: 'center' }}>{item.likes + userFavouriteRecipes.includes(item.id)}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           {isLoggedIn ? <LikeButton idUser={idUser} item={item} userFavouriteRecipes={userFavouriteRecipes} addFavouriteRecipe={addFavouriteRecipe} removeFavouriteRecipe={removeFavouriteRecipe} /> : null /* se l'utente è loggato mostra il bottone like */}
         </View>
       </View>
@@ -78,16 +75,11 @@ const styles = StyleSheet.create({
   },
   categoryBackground: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    blur: {
-      position: "absolute",
-      top: 0, left: 0, bottom: 0, right: 0
-    },
     alignItems: 'center',
     borderRadius: 10,
     position: 'absolute',
     width: '85%',
-    height: '55%',
-    zIndex: 0,
+    maxHeight: '95%',
     blurRadius: 20,
     zIndex: 0,
   },

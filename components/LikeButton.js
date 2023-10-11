@@ -48,7 +48,7 @@ const LikeButton = ({ idUser, item, key, userFavouriteRecipes, addFavouriteRecip
       };
 
     return (
-        <View>
+        <View style={{height:100}} >
             <TouchableOpacity style={styles.circle} onPress={handleLike}>
                 <Ionicons name="ios-heart" size={40} color={colorHeart} />
             </TouchableOpacity>
