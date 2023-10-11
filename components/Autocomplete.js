@@ -85,7 +85,7 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
       <View style={{ display: 'flex', flexDirection: 'row', zIndex: 1000 }}>
         <View style={{ display: 'flex', justifyContent: 'center' }}>
           <FlatList
-            style={[styles.listContainerStyle, { borderColor: borderColor, borderWidth: isFocused && filteredSuggestions.length > 0 ? 1 : 0, display: isFocused ? 'flex' : 'none' }]}
+            style={[styles.listContainerStyle, { borderColor: borderColor, borderWidth: filteredSuggestions.length > 0 ? 1 : 0, display: 'flex'}]}
             scrollEnabled={false}
             data={filteredSuggestions}
             inverted={true}
