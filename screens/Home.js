@@ -83,7 +83,6 @@ export default function Home({ idUser, user, isLoggedIn, userFavouriteRecipes, s
   return (
     <View style={styleContainer.container}>
       <Recipes
-        style={{marginBottom: 20}}
         recipes={recipes}
         updateRecipes={updateRecipes}
         idUser={idUser}
@@ -105,6 +104,5 @@ const styleContainer = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 100,
   },
 });

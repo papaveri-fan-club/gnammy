@@ -108,7 +108,6 @@ export default function Search({ isLoggedIn, idUser, userFavouriteRecipes, setUs
                   </TouchableOpacity>
                 ))}
               </ScrollView>
-
             )
           )
         )}
@@ -153,7 +152,7 @@ const styles = StyleSheet.create({
   },
   ViewX: {
     width: '100%',
-    height: 30, 
+    height: 30,
     justifyContent: 'flex-end',
     flexDirection: 'row'
   },

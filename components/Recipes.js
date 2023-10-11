@@ -92,6 +92,11 @@ const Recipes = ({ recipes, updateRecipes, idUser, isLoggedIn = false, userFavou
         keyExtractor={(item, index) => index.toString()}
         onEndReached={onEndRefresh}
         onEndReachedThreshold={0.1}
+        ListFooterComponent={() => {
+          return (
+            <View style={{ height: 60 }}/>
+          );
+        }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
