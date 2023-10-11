@@ -46,7 +46,9 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
   }, [inputText]);
 
   const handleInputChange = (text) => {
-    setInputText(encodeURIComponent(text));
+    text = text.replace(/'/g, "’");
+    setInputText(text);
+    //se il textinput contiene apostrofi strani li sosituisce con quelli normali
   };
 
   const pressSuggestion = (suggestion) => {
@@ -104,7 +106,7 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
             style={[styles.button, { borderColor: borderColor, borderBottomWidth: 1, borderLeftWidth: 1, borderTopWidth: 1, }]}
             maxLength={40}
             placeholder="Inizia a digitare..."
-            value={decodeURIComponent(inputText)}
+            value={inputText}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             onChangeText={handleInputChange}
