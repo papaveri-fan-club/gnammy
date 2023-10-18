@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Animated, Dimensions, FlatList, RefreshControl, ActivityIndicator, Image, Text } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions, FlatList, RefreshControl, Pressable, Image, Text } from 'react-native';
 import { initRecipes } from './initRecipes';
 
 import axios from "axios";
 import { domain } from '../dns';
 import Recipe from './Recipe';
+import DietPage from '../screens/dietPage';
 
 const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setUserFavouriteRecipes, endRefreshing, onEndRefresh, user }) => {
+    const [showDietPage, setShowDietPage] = useState(false);
     const [recipes, setRecipes] = useState([0]); // Stato per memorizzare gli elementi ricevuti dalla ricerca
     const updateRecipes = (newRecipes) => {
         setRecipes(newRecipes);
@@ -69,7 +71,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
         if (index === 0) {
             return (
                 <View>
-                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
+                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} setShowDietPage={setShowDietPage} />
                     <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
                         <Recipe
                             key={index}
@@ -153,44 +155,52 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
         );
     };
 
-    if (recipes.length === 0) {
-        return (
-            <View>
-                <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
-            </View>
-        )
+    if (!showDietPage) {
+        if (recipes.length === 0) {
+            return (
+                <View>
+                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
+                </View>
+            )
+        } else {
+            return (
+                <View style={{ justifyContent: 'center', height: '100%' }} >
+                    <Animated.FlatList
+                        style={styles.container}
+                        data={recipes}
+                        renderItem={renderRecipeItem}
+                        showsVerticalScrollIndicator={false}
+                        onScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                            { useNativeDriver: true }
+                        )}
+                        keyExtractor={(item, index) => index.toString()}
+                        onEndReached={onEndRefresh}
+                        onEndReachedThreshold={0.1}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                            />
+                        }
+                    />
+                </View>
+            );
+        }
     } else {
         return (
-            <View style={{ justifyContent: 'center', height: '100%' }} >
-                <Animated.FlatList
-                    style={styles.container}
-                    data={recipes}
-                    renderItem={renderRecipeItem}
-                    showsVerticalScrollIndicator={false}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                        { useNativeDriver: true }
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
-                    onEndReached={onEndRefresh}
-                    onEndReachedThreshold={0.1}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
-                    }
-                />
+            <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
+                <DietPage />
             </View>
-        );
+        )
     }
 };
 
-const ProfileInformationPage = ({ user, userFavouriteRecipes }) => {
+const ProfileInformationPage = ({ user, userFavouriteRecipes, setShowDietPage }) => {
     return (
         <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
             {/* Immagine del profilo */}
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
                 <Image source={require("../assets/user.png")} style={styles.profileImage} />
 
                 {/* Nome utente */}
@@ -203,6 +213,9 @@ const ProfileInformationPage = ({ user, userFavouriteRecipes }) => {
                     <Text style={styles.statNumber}>{userFavouriteRecipes.length}</Text>
                     <Text style={styles.statName}>Like messi</Text>
                 </View>
+                <Pressable onPress={() => setShowDietPage(true)}>
+                    <Text style={styles.statNumber}>Dieta</Text>
+                </Pressable>
                 <View style={styles.stat}>
                     <Text style={styles.statNumber}>#</Text>
                     <Text style={styles.statName}>Media Like</Text>
