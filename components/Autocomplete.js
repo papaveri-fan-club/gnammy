@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import RNSingleSelect from "@freakycoder/react-native-single-select";
 
-export default function Autocomplete({ myStyle, listStyle, defaultValue, onChangeText, onRemove }) {
+export default function Autocomplete({ myStyle, listStyle, defaultValue, onChangeText, legend = true }) {
   const [inputText, setInputText] = useState('');
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
@@ -23,26 +23,24 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
       setFilteredSuggestions('');
       return;
     }
-    console.log(inputText);
     const lastIngredient = encodeURIComponent(inputText);
-    console.log(lastIngredient);
     axios.get(`${domain}/getIngredientsByName/${lastIngredient}`)
-    .then((response) => {
-      setFilteredSuggestions(response.data);
-    })
-    .catch((error) => {
-      if (error.response) {
-        // Errore dalla risposta del server (es. errore HTTP)
-        console.error("Errore nella risposta del server:", error.response.data);
-      } else if (error.request) {
-        // Nessuna risposta dal server
-        console.error("Nessuna risposta dal server:", error.request);
-      } else {
-        // Errore durante la richiesta
-        console.error("Errore durante la richiesta:", error.message);
-      }
-    });
-  
+      .then((response) => {
+        setFilteredSuggestions(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Errore dalla risposta del server (es. errore HTTP)
+          console.error("Errore nella risposta del server:", error.response.data);
+        } else if (error.request) {
+          // Nessuna risposta dal server
+          console.error("Nessuna risposta dal server:", error.request);
+        } else {
+          // Errore durante la richiesta
+          console.error("Errore durante la richiesta:", error.message);
+        }
+      });
+
   }, [inputText]);
 
   const handleInputChange = (text) => {
@@ -59,6 +57,7 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
   };
 
   useEffect(() => {
+    console.log('buttonPressed', buttonPressed);
     setButtonPressed(false);
     if (inputText == '') { console.log('ingredient.title == ""'); return; }
     if (ingredient.amount == '') { console.log('ingredient.amount == ""'); return; }
@@ -71,23 +70,27 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
       unit: ingredient.unit,
     };
 
-    // Aggiungi il nuovo ingrediente all'array ingredients
+    // Aggiungi il nuovo ingrediente all'array ingredien
     setIngredients([...ingredients, newIngredient]);
-    if (buttonPressed) onChangeText([...ingredients, newIngredient]);
 
     // Resetta gli stati
     setIngredient({ title: '', amount: '', unit: '' });
     setInputText('');
   }, [buttonPressed]);
 
+  useEffect(() => {
+    console.log('ingredients', ingredients);
+    onChangeText(ingredients);
+  }, [ingredients]);
+
 
   return (
-    <View style={[myStyle, { zIndex: 1000, marginTop: 20 }]}>
+    <View style={[myStyle, { zIndex: 10000 }]}>
       <IndexTable />
       <View style={{ display: 'flex', flexDirection: 'row', zIndex: 1000 }}>
         <View style={{ display: 'flex', justifyContent: 'center' }}>
           <FlatList
-            style={[styles.listContainerStyle, { borderColor: borderColor, borderWidth: filteredSuggestions.length > 0 ? 1 : 0, display: 'flex'}]}
+            style={[styles.listContainerStyle, { borderColor: borderColor, borderWidth: filteredSuggestions.length > 0 ? 1 : 0, display: 'flex' }]}
             scrollEnabled={false}
             data={filteredSuggestions}
             inverted={true}
@@ -130,12 +133,17 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
           scrollEnabled={false}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }) => (
-            <IngredientTable ingredient={item} recipeNumber={index} lastIngredient={ingredients.length - 1} onRemove={handleRemoveIngredient} ingredients={ingredients} />
+            <IngredientTable ingredient={item} recipeNumber={index} lastIngredient={ingredients.length - 1} ingredients={ingredients} setIngredients={setIngredients} />
           )}
           keyExtractor={(item) => item.title}
         />
-        <Text style={{marginTop: 20, fontSize: 12}}>Legenda quantità: </Text>
-        <Text style={{fontSize: 12}}>•g = grammi{'\n'}•pz = pezzi{'\n'}•qb = quanto basta{'\n'}•ml = millilitri{'\n'}•cc = cucchiaini{'\n'}•c = cucchiai</Text>
+
+        {legend ? (
+          <View>
+            <Text style={{ marginTop: 20, fontSize: 12 }}>Legenda quantità: </Text>
+            <Text style={{ fontSize: 12 }}>•g = grammi{'\n'}•pz = pezzi{'\n'}•qb = quanto basta{'\n'}•ml = millilitri{'\n'}•cc = cucchiaini{'\n'}•c = cucchiai</Text>
+          </View>
+        ) : null}
       </View>
     </View>
   );
@@ -186,7 +194,7 @@ const SquareUnit = ({ ingredient, setIngredient }) => {
         buttonContainerStyle={{ borderRadius: 0, borderTopLeftRadius: 0, backgroundColor: '#f8f4fc', borderWidth: 1, borderColor: 'grey' }}
         placeholderTextStyle={{ fontSize: 12, color: 'black', padding: 0, margin: 0, width: 25, right: 10, textAlign: 'center', width: '100%' }}
         menuItemTextStyle={{ fontSize: 12, padding: 0, margin: 0 }}
-        
+
         placeholder={ingredient.unit ? ingredient.unit : 'Unit'}
         menuBarContainerStyle={{ width: '100%', height: 300, backgroundColor: '#f8f4fc', borderWidth: 1, borderColor: 'grey', zIndex: 9999 }}
         arrowImageStyle={styles.iconStyle}
@@ -207,7 +215,7 @@ const SquareUnit = ({ ingredient, setIngredient }) => {
 
 const IndexTable = ({ }) => {
   return (
-    <View style={{ width: 300, height: 20, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+    <View style={{ width: 300, height: 20, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
       <Text style={{ width: '50%', textAlign: 'center' }}>Ingredienti</Text>
       <Text style={{ width: '25%', textAlign: 'center' }}>Quantità</Text>
       <Text style={{ width: '25%', textAlign: 'center' }}>Unità</Text>
@@ -216,30 +224,43 @@ const IndexTable = ({ }) => {
 }
 
 
-//funzione che rimuove ingredienti dalla lista
-const handleRemoveIngredient = (ingredientToRemove) => {
-  setIngredients(ingredients.filter((ingredient) => ingredient !== ingredientToRemove));
-};
 
 
+const IngredientTable = ({ ingredient, recipeNumber, lastIngredient, ingredients, setIngredients }) => {
+  const handleRemoveIngredient = (ingredient) => {
+    // Filtra gli ingredienti per rimuovere quello specifico
+    console.log(ingredient);
+    const newIngredients = ingredients.filter((item) => item.title !== ingredient.title);
+    console.log(newIngredients);
+    setIngredients(newIngredients);
+    console.log(ingredients);
+  }
 
-
-const IngredientTable = ({ ingredient, recipeNumber, lastIngredient, onRemove }) => {
   return (
-    <View style={styles.tableContainer}>
-      <View style={[styles.borderView, { width: '50%', borderBottomLeftRadius: recipeNumber == lastIngredient ? 5 : 0 }]}>
-        <Text style={styles.tableText}>{ingredient.title}</Text>
+    <View style={{ width: 300, flexDirection: 'row' }}>
+      <View style={styles.tableContainer}>
+        <View style={[styles.borderView, { width: '50%', borderBottomLeftRadius: recipeNumber === lastIngredient ? 5 : 0 }]}>
+          <Text style={styles.tableText}>{ingredient.title}</Text>
+        </View>
+        <View style={[styles.borderView, { width: '25%' }]}>
+          <Text style={styles.tableText}>{ingredient.amount}</Text>
+        </View>
+        <View style={[styles.borderView, { width: '25%', borderRightWidth: 1, borderBottomRightRadius: recipeNumber === lastIngredient ? 5 : 0 }]}>
+          <Text style={styles.tableText}>{ingredient.unit}</Text>
+        </View>
       </View>
-      <View style={[styles.borderView, { width: '25%' }]}>
-        <Text style={styles.tableText}>{ingredient.amount}</Text>
+      <View>
+        <TouchableOpacity style={{ width: 20, height: 20 }}
+          onPress={() => {
+            handleRemoveIngredient(ingredient);
+          }}>
+          <Ionicons name="close-circle-outline" size={20} />
+        </TouchableOpacity>
       </View>
-      <View style={[styles.borderView, { width: '25%', borderRightWidth: 1, borderBottomRightRadius: recipeNumber == lastIngredient ? 5 : 0 }]}>
-        <Text style={styles.tableText}>{ingredient.unit}</Text>
-      </View>
-
     </View>
-  )
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -322,7 +343,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   tableContainer: {
-    width: 300,
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

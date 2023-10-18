@@ -54,7 +54,7 @@ export default function AddRecipes ({isLoggedIn, user}) {
         } else if (recipe.category === '') {
           alert('Inserisci le categorie');
           return;
-        } else if (recipe.ingredients === '') {
+        } else if (recipe.ingredients.length === 0) {
           alert('Inserisci gli ingredienti');
           return;
         } else if (recipe.preparation === '') {
