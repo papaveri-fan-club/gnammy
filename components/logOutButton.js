@@ -1,8 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Image, View } from 'react-native';
 import {
-    storeData,
-    getData,
     removeData,
 } from "./functions/AsyncStorage";
 import { Ionicons } from '@expo/vector-icons';

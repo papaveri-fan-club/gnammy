@@ -4,8 +4,10 @@ import axios from "axios";
 const storeData = async (value, key) => {
   try {
     await AsyncStorage.setItem(key, value);
+    console.log("value", value);
   } catch (e) {
     // saving error
+    console.error(`Errore durante il salvataggio del dato con chiave "${key}":`, e);
   }
 };
 
@@ -17,6 +19,7 @@ const getData = async (key) => {
     }
   } catch (e) {
     // error reading value
+    console.error(`Errore durante la lettura del dato con chiave "${key}":`, e);
   }
 };
 

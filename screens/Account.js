@@ -8,7 +8,7 @@ export default function App({ user, isLoggedIn, updateUserData, userFavouriteRec
   return (
     <View style={{ backgroundColor: '#FFEFAF' }}>
       {isLoggedIn ? (
-        <UserPage user={user} idUser={user.id} isLoggedIn={true} userFavouriteRecipes={userFavouriteRecipes} setUserFavouriteRecipes={setUserFavouriteRecipes} />
+        <UserPage user={user} idUser={user.id} isLoggedIn={true} userFavouriteRecipes={userFavouriteRecipes} setUserFavouriteRecipes={setUserFavouriteRecipes} isTheAccountLogged={true} />
       ) : (
         <NotLoggedInPage updateUserData={updateUserData} />
       )}

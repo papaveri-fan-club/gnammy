@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Animated, Dimensions, FlatList, RefreshControl, Pressable, Image, Text } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions, FlatList, RefreshControl, Pressable, Image, Text, TouchableOpacity } from 'react-native';
 import { initRecipes } from './initRecipes';
 
 import axios from "axios";
@@ -7,7 +7,8 @@ import { domain } from '../dns';
 import Recipe from './Recipe';
 import DietPage from '../screens/dietPage';
 
-const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setUserFavouriteRecipes, endRefreshing, onEndRefresh, user }) => {
+const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setUserFavouriteRecipes, onEndRefresh, user, isTheAccountLogged = false }) => {
+    console.log("isThe", isTheAccountLogged)
     const [showDietPage, setShowDietPage] = useState(false);
     const [recipes, setRecipes] = useState([0]); // Stato per memorizzare gli elementi ricevuti dalla ricerca
     const updateRecipes = (newRecipes) => {
@@ -71,7 +72,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
         if (index === 0) {
             return (
                 <View>
-                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} setShowDietPage={setShowDietPage} />
+                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} setShowDietPage={setShowDietPage} isTheAccountLogged={isTheAccountLogged} />
                     <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
                         <Recipe
                             key={index}
@@ -159,7 +160,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
         if (recipes.length === 0) {
             return (
                 <View>
-                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
+                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} isTheAccountLogged={isTheAccountLogged} />
                 </View>
             )
         } else {
@@ -190,13 +191,13 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
     } else {
         return (
             <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
-                <DietPage />
+                <DietPage setShowDietPage={setShowDietPage} />
             </View>
         )
     }
 };
 
-const ProfileInformationPage = ({ user, userFavouriteRecipes, setShowDietPage }) => {
+const ProfileInformationPage = ({ user, userFavouriteRecipes, setShowDietPage, isTheAccountLogged=false }) => {
     return (
         <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
             {/* Immagine del profilo */}
@@ -213,9 +214,9 @@ const ProfileInformationPage = ({ user, userFavouriteRecipes, setShowDietPage })
                     <Text style={styles.statNumber}>{userFavouriteRecipes.length}</Text>
                     <Text style={styles.statName}>Like messi</Text>
                 </View>
-                <Pressable onPress={() => setShowDietPage(true)}>
+                { isTheAccountLogged ? <Pressable onPress={() => setShowDietPage(true)}>
                     <Text style={styles.statNumber}>Dieta</Text>
-                </Pressable>
+                </Pressable> : null }
                 <View style={styles.stat}>
                     <Text style={styles.statNumber}>#</Text>
                     <Text style={styles.statName}>Media Like</Text>
