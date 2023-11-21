@@ -1,7 +1,7 @@
 {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "[javascript]": {
-      "editor.defaultFormatter": "vscode.typescript-language-features"
+      "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
     },
     "[json]": {
       "editor.defaultFormatter": "vscode.json-language-features"
