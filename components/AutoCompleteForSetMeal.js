@@ -7,28 +7,26 @@ import { Ionicons } from '@expo/vector-icons';
 
 import RNSingleSelect from "@freakycoder/react-native-single-select";
 
-export default function Autocomplete({ myStyle, ingredientsAlreadyAdded = [], onChangeText, legend = true, defaultSuggestions = [] }) {
+export default function AutocompleteForSetMeal({ myStyle, onChangeText, defaultSuggestions = [], zIndex }) {
   const [inputText, setInputText] = useState('');
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
-  const [ingredients, setIngredients] = useState([...ingredientsAlreadyAdded]);
-  const [ingredient, setIngredient] = useState({ title: '', amount: '', timesAWeek: '', unit: '' });
-  const [buttonPressed, setButtonPressed] = useState(false); // Stato di focus per gli ingredienti
-  console.log("defaultSuggestions", defaultSuggestions);
+  const [ingredient, setIngredient] = useState({ title: '', amount: '', unit: '' });
 
   const borderColor = isFocused ? 'blue' : 'gray'; // Colore del contorno durante lo stato di focus
 
   useEffect(() => {
     if (inputText.length == 0) {
-      console.log('inputText.length == 0');
       setFilteredSuggestions('');
       return;
     }
     if (defaultSuggestions.length != 0) {
       //prendi dai suggerimenti predefiniti i suggerimenti, massimo 5, che iniziano con inopputtext
       const filtered = defaultSuggestions.filter((suggestion) => suggestion.title.toLowerCase().startsWith(inputText.toLowerCase())).slice(0, 5);
-      setFilteredSuggestions(filtered);
-      return;
+      if (filtered.length != 0) {
+        setFilteredSuggestions(filtered);
+        return;
+      }
     }
     const lastIngredient = encodeURIComponent(inputText);
     axios.get(`${domain}/getIngredientsByName/${lastIngredient}`)
@@ -56,45 +54,12 @@ export default function Autocomplete({ myStyle, ingredientsAlreadyAdded = [], on
     //se il textinput contiene apostrofi strani li sosituisce con quelli normali
   };
 
-  const pressSuggestion = (suggestion) => {
-    setFilteredSuggestions('');
-    setInputText(suggestion);
-    setIngredient({ title: suggestion, amount: '', timesAWeek: '', unit: '' });
-    console.log(suggestion);
-  };
-
   useEffect(() => {
-    // console.log('buttonPressed', buttonPressed);
-    setButtonPressed(false);
-    if (inputText == '') { /*console.log('ingredient.title == ""');*/ return; }
-    if (ingredient.amount == '') { console.log('ingredient.amount == ""'); return; }
-    if (ingredient.timesAWeek == '') { console.log('ingredient.timesAWeek == ""'); return; }
-    if (ingredient.unit == '') { console.log('ingredient.unit == ""'); return; }
-
-    // Crea un nuovo oggetto con le modifiche
-    const newIngredient = {
-      title: inputText,
-      amount: ingredient.amount,
-      timesAWeek: ingredient.timesAWeek,
-      unit: ingredient.unit,
-    };
-
-    // Aggiungi il nuovo ingrediente all'array ingredien
-    setIngredients([...ingredients, newIngredient]);
-
-    // Resetta gli stati
-    setIngredient({ title: '', amount: '', timesAWeek: '', unit: '' });
-    setInputText('');
-  }, [buttonPressed]);
-
-  useEffect(() => {
-    // console.log('ingredients', ingredients);
-    onChangeText(ingredients);
-  }, [ingredients]);
-
+    onChangeText(ingredient);
+  }, [ingredient]);
 
   return (
-    <View style={[myStyle, { zIndex: 10000 }]}>
+    <View style={myStyle}>
       <IndexTable />
       <View style={{ flexDirection: 'row', zIndex: 1000 }}>
         <View style={{ display: 'flex', justifyContent: 'center', width: '50%' }}>
@@ -105,11 +70,27 @@ export default function Autocomplete({ myStyle, ingredientsAlreadyAdded = [], on
             inverted={true}
             keyboardShouldPersistTaps="always"
             renderItem={({ item }) =>
-              <Pressable key={item} style={{ height: 25, width: '100%', padding: 2, borderTopWidth: 1, justifyContent: 'center', alignItems: 'center' }}
+              <Pressable key={item} style={{ width: '100%', padding: 2, borderTopWidth: 1, justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  pressSuggestion(item.title);
+                  console.log(item);
+                  try {
+                    setIngredient({ title: item.title, amount: item.amount, unit: item.unit });
+                    setInputText(item.title);
+                    setFilteredSuggestions('');
+                  } catch (error) {
+                    console.log(error);
+                  }
+                  // pressSuggestion(item.title);
                 }}>
-                <Text>{item.title}</Text>
+                <Text style={{ fontSize: 12 }}>{item.title}</Text>
+                {item.amount != undefined ?
+                  <View style={{ flexDirection: 'row', width: '95%', justifyContent: 'space-between' }}>
+                    <Text style={{ fontSize: 10 }}>{item.amount} {item.unit}</Text>
+                    <Text style={{ fontSize: 10 }}> |</Text>
+                    <Text style={{ fontSize: 10 }}>times a week: {item.timesAWeek}</Text>
+                  </View>
+                  : null
+                }
               </Pressable>}
             keyExtractor={(item) => item.title}
           />
@@ -121,39 +102,13 @@ export default function Autocomplete({ myStyle, ingredientsAlreadyAdded = [], on
             value={inputText}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            onChangeText={handleInputChange}
+            onChangeText={(text) => {const newIngredient = { ...ingredient, title: text }; setIngredient(newIngredient); handleInputChange(text)}}
           />
         </View>
-        <View style={{ width: '50%', height: 23, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-          <SquareTimesAWeek ingredient={ingredient} setIngredient={setIngredient} />
+        <View style={{ width: '50%', height: 23, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', zIndex: zIndex }}>
           <SquareAmount ingredient={ingredient} setIngredient={setIngredient} />
-          <SquareUnit ingredient={ingredient} setIngredient={setIngredient} />
+          <SquareUnit ingredient={ingredient} setIngredient={setIngredient} style={{zIndex: zIndex}} />
         </View>
-        <Pressable style={{ height: 45, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-          onPress={() => {
-            setButtonPressed(true);
-          }}>
-          <Ionicons name="add-circle-outline" size={30} />
-        </Pressable>
-      </View>
-      <View style={{ width: '100%' }}>
-        <FlatList
-          style={{ width: '100%', zIndex: 0, borderBottomWidth: 1, borderColor: 'grey', borderBottomRightRadius: 5, borderBottomLeftRadius: 5, overflow: 'hidden', backgroundColor: 'white' }}
-          data={ingredients}
-          scrollEnabled={false}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <IngredientTable ingredient={item} recipeNumber={index} lastIngredient={ingredients.length - 1} ingredients={ingredients} setIngredients={setIngredients} />
-          )}
-          keyExtractor={(item) => item.title}
-        />
-
-        {legend ? (
-          <View>
-            <Text style={{ marginTop: 20, fontSize: 12 }}>Legenda quantità: </Text>
-            <Text style={{ fontSize: 12 }}>•g = grammi{'\n'}•pz = pezzi{'\n'}•qb = quanto basta{'\n'}•ml = millilitri{'\n'}•cc = cucchiaini{'\n'}•c = cucchiai</Text>
-          </View>
-        ) : null}
       </View>
     </View>
   );
@@ -180,24 +135,6 @@ const SquareAmount = ({ ingredient, setIngredient }) => {
       onChangeText={(value) => {
         value = value.replace(',', '.');
         const newIngredient = { ...ingredient, amount: value };
-        setIngredient(newIngredient);
-      }}
-    />
-  );
-}
-
-const SquareTimesAWeek = ({ ingredient, setIngredient }) => {
-  const [isFocused, setIsFocused] = useState(false)
-
-  return (
-    <TextInput style={[styles.squareTimesAWeek, { borderColor: isFocused ? 'blue' : 'grey' }]}
-      maxLength={2}
-      value={ingredient.timesAWeek}
-      keyboardType='numeric'
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      onChangeText={(value) => {
-        const newIngredient = { ...ingredient, timesAWeek: value };
         setIngredient(newIngredient);
       }}
     />
@@ -243,50 +180,12 @@ const SquareUnit = ({ ingredient, setIngredient }) => {
 const IndexTable = ({ }) => {
   return (
     <View style={{ width: 300, height: 20, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-      <Text style={{ width: '50%', textAlign: 'center', fontSize: 10  }}>Ingredienti</Text>
-      <Text style={{ width: '12.5%', textAlign: 'center', fontSize: 10  }}>Volte</Text>
+      <Text style={{ width: '50%', textAlign: 'center', fontSize: 10 }}>Ingredienti</Text>
       <Text style={{ width: '17.5%', textAlign: 'center', fontSize: 10 }}>Quantità</Text>
-      <Text style={{ width: '20%', textAlign: 'center', fontSize: 10  }}>Unità</Text>
+      <Text style={{ width: '20%', textAlign: 'center', fontSize: 10 }}>Unità</Text>
     </View>
   )
 }
-
-const IngredientTable = ({ ingredient, recipeNumber, lastIngredient, ingredients, setIngredients }) => {
-  const handleRemoveIngredient = (ingredient) => {
-    // Filtra gli ingredienti per rimuovere quello specifico
-    console.log(ingredient);
-    const newIngredients = ingredients.filter((item) => item.title !== ingredient.title);
-    console.log(newIngredients);
-    setIngredients(newIngredients);
-    console.log(ingredients);
-  }
-
-  return (
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.tableContainer}>
-        <View style={[styles.borderView, { width: '50%', borderBottomLeftRadius: recipeNumber === lastIngredient ? 5 : 0 }]}>
-          <Text style={styles.tableText}>{ingredient.title}</Text>
-        </View>
-        <View style={[styles.borderView, { width: '12.5%' }]}>
-          <Text style={styles.tableText}>{ingredient.timesAWeek}</Text>
-        </View>
-        <View style={[styles.borderView, { width: '17.5%' }]}>
-          <Text style={styles.tableText}>{ingredient.amount}</Text>
-        </View>
-        <View style={[styles.borderView, { width: '20%', alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row', borderRightWidth: 1, borderBottomRightRadius: recipeNumber === lastIngredient ? 5 : 0 }]}>
-          <Text style={styles.tableText}>{ingredient.unit}</Text>
-          <TouchableOpacity style={{ width: 20, height: 20 }}
-            onPress={() => {
-              handleRemoveIngredient(ingredient);
-            }}>
-            <Ionicons name="close-circle-outline" size={20} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-}
-
 
 const styles = StyleSheet.create({
   container: {
@@ -315,18 +214,6 @@ const styles = StyleSheet.create({
   },
   squareAmount: {
     width: '35%',
-    height: 45,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderTopWidth: 1,
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#f8f4fc",
-    display: 'flex',
-    zIndex: 2,
-  },
-  squareTimesAWeek: {
-    width: '25%',
     height: 45,
     borderBottomWidth: 1,
     borderLeftWidth: 1,

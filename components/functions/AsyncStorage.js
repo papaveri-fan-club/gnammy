@@ -14,7 +14,7 @@ const storeData = async (value, key) => {
 const getData = async (key) => {
   try {
     const value = await AsyncStorage.getItem(key);
-    if (value !== null) {
+    if (value !== undefined || value !== null) {
       return value;
     }
   } catch (e) {
