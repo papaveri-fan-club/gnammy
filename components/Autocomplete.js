@@ -57,11 +57,11 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
   };
 
   useEffect(() => {
-    console.log('buttonPressed', buttonPressed);
+    // console.log('buttonPressed', buttonPressed);
     setButtonPressed(false);
-    if (inputText == '') { console.log('ingredient.title == ""'); return; }
-    if (ingredient.amount == '') { console.log('ingredient.amount == ""'); return; }
-    if (ingredient.unit == '') { console.log('ingredient.unit == ""'); return; }
+    if (inputText == '') { {/*console.log('ingredient.title == ""');*/} return; }
+    if (ingredient.amount == '') { {/*console.log('ingredient.amount == ""');*/} return; }
+    if (ingredient.unit == '') { {/*console.log('ingredient.unit == ""');*/} return; }
 
     // Crea un nuovo oggetto con le modifiche
     const newIngredient = {
@@ -79,7 +79,7 @@ export default function Autocomplete({ myStyle, listStyle, defaultValue, onChang
   }, [buttonPressed]);
 
   useEffect(() => {
-    console.log('ingredients', ingredients);
+    // console.log('ingredients', ingredients);
     onChangeText(ingredients);
   }, [ingredients]);
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, FlatList, Pressable, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { domain } from '../dns';
-import { Ionicons } from '@expo/vector-icons';
 
 
 import RNSingleSelect from "@freakycoder/react-native-single-select";
@@ -54,10 +53,6 @@ export default function AutocompleteForSetMeal({ myStyle, onChangeText, defaultS
     //se il textinput contiene apostrofi strani li sosituisce con quelli normali
   };
 
-  useEffect(() => {
-    onChangeText(ingredient);
-  }, [ingredient]);
-
   return (
     <View style={myStyle}>
       <IndexTable />
@@ -72,7 +67,7 @@ export default function AutocompleteForSetMeal({ myStyle, onChangeText, defaultS
             renderItem={({ item }) =>
               <Pressable key={item} style={{ width: '100%', padding: 2, borderTopWidth: 1, justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  console.log(item);
+                  // console.log(item);
                   try {
                     setIngredient({ title: item.title, amount: item.amount, unit: item.unit });
                     setInputText(item.title);
