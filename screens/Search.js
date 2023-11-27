@@ -19,6 +19,8 @@ import icona10 from '../assets/profileIcons/icona10.png';
 import icona11 from '../assets/profileIcons/icona11.png';
 import icona12 from '../assets/profileIcons/icona12.png';
 
+import SearchFilter from '../components/SearchFilter';
+
 
 export default function Search({ isLoggedIn, idUser, userFavouriteRecipes, setUserFavouriteRecipes }) {
 
@@ -49,7 +51,6 @@ export default function Search({ isLoggedIn, idUser, userFavouriteRecipes, setUs
     setRand(Math.floor(Math.random() * 12) + 1);
   }, [profileView]);
 
-
   const imageMap = {
     1: icona1,
     2: icona2,
@@ -67,10 +68,14 @@ export default function Search({ isLoggedIn, idUser, userFavouriteRecipes, setUs
 
   const imagePath = imageMap[rand];
 
+  const [showSearchFilter, setShowSearchFilter] = useState(false);
+
   if (profileView == false) {
     return (
+      <>
+      {showSearchFilter && <SearchFilter setShowSearchFilter={setShowSearchFilter}/>}
       <View style={{ alignItems: 'center', paddingBottom: 110 }}>
-        <SearchBar loadingTrue={loadingTrue} loadingFalse={loadingFalse} updateRecipes={updateRecipes} updateUsersSearched={updateUsersSearched} />
+        <SearchBar loadingTrue={loadingTrue} loadingFalse={loadingFalse} updateRecipes={updateRecipes} updateUsersSearched={updateUsersSearched} setShowSearchFilter={setShowSearchFilter} />
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
@@ -112,6 +117,7 @@ export default function Search({ isLoggedIn, idUser, userFavouriteRecipes, setUs
           )
         )}
       </View>
+      </>
     );
   } else {
     return (

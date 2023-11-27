@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, ImageBackground, Text, TouchableOpacity, StyleSheet, } from 'react-native'; // Aggiunta dell'importazione mancante
 import axios from 'axios';
 import { domain } from '../dns';
-import { Ionicons } from '@expo/vector-icons';
-const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearched }) => {
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import SearchFilter from './SearchFilter';
+const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearched, setShowSearchFilter }) => {
   const [searchText, setSearchText] = useState(''); // Stato per memorizzare il testo di ricerca
-  const [buttonSelected, setButtonSelected] = useState('recipe')
-  
-  const searchRecipeByName = () => {   
+  const [buttonSelected, setButtonSelected] = useState('recipe');
+
+
+  const searchRecipeByName = () => {
     if (searchText === '') {
       updateRecipes([]);
       return;
@@ -30,7 +32,7 @@ const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearch
   };
 
   const searchUsersByName = () => {
-    if (searchText === ''){
+    if (searchText === '') {
       updateUsersSearched([]);
       return;
     }
@@ -38,11 +40,11 @@ const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearch
     loadingTrue();
     console.log(searchText);
     axios
-    .get(`${domain}/getUsers/${searchText}`)
-    .then((response) => {
-      console.log(response.data);
-      response.data.forEach(item => {
-        item.createdRecipes = item.createdRecipes.split(',').filter(str => str !== '');
+      .get(`${domain}/getUsers/${searchText}`)
+      .then((response) => {
+        console.log(response.data);
+        response.data.forEach(item => {
+          item.createdRecipes = item.createdRecipes.split(',').filter(str => str !== '');
           item.favouriteRecipes = item.favouriteRecipes.split(',').filter(str => str !== '');
         });
         const data = response.data;
@@ -52,7 +54,7 @@ const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearch
       .catch(error => {
         console.error(error);
       })
-      loadingFalse();
+    loadingFalse();
   };
 
   useEffect(() => {
@@ -75,7 +77,12 @@ const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearch
           onChangeText={text => setSearchText(encodeURIComponent(text))}
           placeholder="Cerca..."
         />
-        <Ionicons name="md-search" size={24} color="black" />
+        <TouchableOpacity 
+          onPress={() => {
+            setShowSearchFilter = true;
+          }}>
+          <MaterialIcons onPress={() => setShowSearchFilter(true)} name="filter-list" size={24} color="black" style={{padding: 10}}/>
+        </TouchableOpacity>
       </View>
       <View style={styles.searchButtons}>
         <TouchableOpacity
@@ -112,7 +119,7 @@ const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearch
 
 const styles = StyleSheet.create({
   searchInput: {
-    width: '90%',
+    width: '85%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
   },
-  
+
   searchButtons: {
     flexDirection: 'row',
     width: '100%',
