@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
 import axios from "axios";
 import { domain } from "../dns";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useState } from "react";
 import { Image } from "react-native";
@@ -16,6 +15,32 @@ export default function RecipePage() {
   const [ingredients, setIngredients] = useState([{}]);
   const amount = item.amount.split(",");
   const unit = item.unit.split(",");
+  const [portions, setPortions] = useState(item.portions);
+
+  useEffect(() => {
+    setPortions(item.portions);
+  }, [item]);
+
+  const handleIncrease = () => {
+    const newPortions = portions + 1;
+    const newIngredients = ingredients.map(ingredient => {
+      const newAmount = ingredient.amount * newPortions / portions;
+      return {...ingredient, amount: Number.isInteger(newAmount) ? newAmount : parseFloat(newAmount.toFixed(2))};    });
+    setPortions(newPortions);
+    setIngredients(newIngredients);
+  }
+  
+  // Metodo per decrementare le porzioni
+  const handleDecrease = () => {
+    if (portions > 1) {
+      const newPortions = portions - 1;
+      const newIngredients = ingredients.map(ingredient => {
+        const newAmount = ingredient.amount * newPortions / portions;
+        return {...ingredient, amount: Number.isInteger(newAmount) ? newAmount : parseFloat(newAmount.toFixed(2))};      });
+      setPortions(newPortions);
+      setIngredients(newIngredients);
+    }
+  }
 
   //trasfoorma item.amount in un array
   useEffect(() => {
@@ -48,7 +73,7 @@ export default function RecipePage() {
   }, [item]);
 
   console.log(ingredients);
-  //aggiungi ad ogni ingrediente ilproprio amount e l unit
+  //aggiungi ad ogni ingrediente il proprio amount e l unit
   return (
     <ScrollView style={styles.container}>
       <View style={{ alignItems: "center", padding: 20 }}>
@@ -62,38 +87,34 @@ export default function RecipePage() {
           <View
             style={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               alignItems: "center",
               width: "100%",
               justifyContent: "space-around",
               textAlign: 'center'
             }}
           >
-            <Text style={styles.recipeTitle}>{item.title}</Text>
-            <Text style={{ width: "33%", fontSize: 15, textAlign: "center" }}>
+            <Text style={{ width: "33%", fontSize: 20, textAlign: "center", fontWeight: "bold", padding: '2%' }}>
               {item.category}
             </Text>
+            <Text style={[styles.recipeTitle, { padding: '2%' }]}>
+              {item.title}
+            </Text>
+            <Text style={[styles.subtitle, { padding: '3%' }]}>
+              By {item.creator_username}
+            </Text>
           </View>
-          <Text
-            style={{
-              fontSize: 20,
-              textAlign: "center",
-              fontWeight: "bold",
-              marginTop: 5,
-            }}
-          >
-            By {item.creator_username}
-          </Text>
         </View>
         <View style={styles.infoContainer}>
           <View
             style={{
               flexDirection: "row",
-              marginHorizontal: 20,
-              marginVertical: 10,
+              padding: "3%",
+              marginTop: "3%",
+              fontSize: 20,
             }}
           >
-            <Text>Contiene Glutine:</Text>
+            <Text style={{marginRight: 10}}>Contiene Glutine:</Text>
             {item.gluten === 0 ? (
               <AntDesign name="closecircleo" size={20} color="red" />
             ) : (
@@ -103,7 +124,7 @@ export default function RecipePage() {
           <View style={styles.centeredView}>
             <View>
               <Text style={styles.title}>Tempo di preparazione{'\n'}(d/h/m)</Text>
-              <Text style={styles.subtitle}>{item.time}</Text>
+              <Text style={[styles.subtitle, {margin: 5}]}>{item.time}</Text>
             </View>
           </View>
           <View
@@ -115,18 +136,26 @@ export default function RecipePage() {
               marginVertical: 10,
             }}
           >
-            <View>
-              <Text style={styles.title}>Porzioni</Text>
-              <Text style={styles.subtitle}>{item.portions}</Text>
+          <View>
+            <Text style={styles.title}>Porzioni</Text>
+            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <TouchableOpacity onPress={handleDecrease} style={styles.button} >
+                <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>-</Text>
+              </TouchableOpacity>
+              <Text style={[styles.subtitle, {fontSize: 17}]}>{portions}</Text>
+              <TouchableOpacity onPress={handleIncrease} style={styles.button} >
+                  <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center'}}>+</Text>
+              </TouchableOpacity>
             </View>
+          </View>
             <View>
               <Text style={styles.title}>Difficoltà</Text>
-              <Text style={styles.subtitle}>{item.difficulty}/5</Text>
+              <Text style={[styles.subtitle, {margin: 10, fontSize: 16}]}>{item.difficulty}/5</Text>
             </View>
           </View>
           <View style={styles.centeredView}>
-            <Text style={styles.title}>Descrizione</Text>
-            <Text style={styles.subtitle}>
+            <Text style={[styles.title, { padding: "2%" }]}>Descrizione</Text>
+            <Text style={[styles.subtitle, {textAlign: 'justify'}]}>
               {item.description}
             </Text>
           </View>
@@ -135,14 +164,14 @@ export default function RecipePage() {
             <View style={styles.ingredientTable}>
               {ingredients.map((ingredient, index) => (
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                  <View style={{width: '75%', borderEndWidth: 1, borderBottomWidth: index!=ingredients.length-1 ? 1 : 0}}>
+                  <View style={{ width: '75%', borderEndWidth: 1, borderBottomWidth: index != ingredients.length - 1 ? 1 : 0 }}>
                     <Text style={styles.subtitle}>
                       {ingredient.title}
                     </Text>
                   </View>
-                  <View style={{width: '25%', borderBottomWidth: index!=ingredients.length-1 ? 1 : 0}}>
+                  <View style={{ width: '25%', borderBottomWidth: index != ingredients.length - 1 ? 1 : 0 }}>
                     <Text style={styles.subtitle}>
-                      {ingredient.amount} {ingredient.unit}
+                    {ingredient.unit === 'qb' ? '*' : ingredient.amount} {ingredient.unit}
                     </Text>
                   </View>
                 </View>
@@ -151,7 +180,7 @@ export default function RecipePage() {
           </View>
           <View style={styles.centeredView}>
             <Text style={styles.title}>Preparazione</Text>
-            <Text style={styles.subtitle}>{item.preparation}</Text>
+            <Text style={[styles.subtitle, { textAlign: 'justify', padding: "4%" }]}>{item.preparation}</Text>
           </View>
         </View>
       </View>
@@ -160,7 +189,7 @@ export default function RecipePage() {
   );
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFEFAF",
     width: "100%",
@@ -197,7 +226,7 @@ styles = StyleSheet.create({
   },
 
   recipeTitle: {
-    width: "66%",
+    width: "80%",
     fontSize: 25,
     textAlign: "center",
     fontWeight: "bold",
@@ -225,4 +254,18 @@ styles = StyleSheet.create({
     marginVertical: 10,
     textAlign: "center",
   },
+
+  button: {
+    width: 25,
+    height: 25,
+    borderRadius: 5,
+    backgroundColor: 'orange',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textAlignVertical: 10,
+    margin: 10,
+  },
+
 });
