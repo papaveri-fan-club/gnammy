@@ -1,16 +1,44 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { domain } from '../dns';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 export default function SearchFilter({ setShowSearchFilter }) {
+
+    const dissolvenza = useRef(new Animated.Value(0)).current;
+
+    const chiudiAnimazione = () => {
+        Animated.timing(
+            dissolvenza,
+            {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true,
+            }
+        ).start(() => setShowSearchFilter(false));
+    };
+
+    useEffect(() => {
+        Animated.timing(
+            dissolvenza,
+            {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+            }
+        ).start();
+    }, []);
+
     return (
-        <View style={styles.container}>
+        <Animated.View style={{
+            ...styles.container,
+            opacity: dissolvenza,
+        }}>
             <TouchableOpacity style={{ position: 'absolute', top: 10, right: 10 }}>
-                <Ionicons name="close-outline" size={30} color="black" onPress={() => setShowSearchFilter(false)} />
+                <Ionicons name="close-outline" size={30} color="black" onPress={chiudiAnimazione} />
             </TouchableOpacity>
             <View>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center' }}>Categorie</Text>
@@ -29,7 +57,7 @@ export default function SearchFilter({ setShowSearchFilter }) {
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -44,7 +72,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         top: '20%',
         left: '10%',
-        padding: 20,
+        padding: 30,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
