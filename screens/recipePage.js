@@ -191,7 +191,7 @@ export default function RecipePage() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFEFAF",
+    backgroundColor: "#ffe890",
     width: "100%",
   },
 

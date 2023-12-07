@@ -43,16 +43,16 @@ export default function SearchFilter({ setShowSearchFilter }) {
             <View>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center' }}>Categorie</Text>
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <TouchableOpacity style={{ backgroundColor: '#FFEFAF', borderRadius: 10, padding: 10, marginRight: 10 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
                         <Text style={{ fontWeight: 'bold' }}>Antipasti</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#FFEFAF', borderRadius: 10, padding: 10, marginRight: 10 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
                         <Text style={{ fontWeight: 'bold' }}>Primi</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#FFEFAF', borderRadius: 10, padding: 10, marginRight: 10 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
                         <Text style={{ fontWeight: 'bold' }}>Secondi</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#FFEFAF', borderRadius: 10, padding: 10, marginRight: 10 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
                         <Text style={{ fontWeight: 'bold' }}>Dolci</Text>
                     </TouchableOpacity>
                 </View>

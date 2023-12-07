@@ -106,7 +106,7 @@ function MainScreen() {
       display: tabBarVisible ? "flex" : "none",
     },
     headerStyle: {
-      backgroundColor: '#FFEFAF',
+      backgroundColor: '#ffe890',
     },
     contentStyle: {
       backgroundColor: '#264653'
@@ -116,7 +116,7 @@ function MainScreen() {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: '#FFEFAF',
+      background: '#ffe890',
       color: 'white'
     },
   };
@@ -128,7 +128,7 @@ function MainScreen() {
           options={{
             headerTitle: "",
             headerStyle: {
-              backgroundColor: '#FFEFAF',
+              backgroundColor: '#ffe890',
             },
 
             tabBarIcon: ({ color, size }) => (
@@ -236,7 +236,7 @@ function MainScreen() {
             tabBarItemStyle: { display: "none" },
             headerTitle: "",
             headerStyle: {
-              backgroundColor: '#FFEFAF',
+              backgroundColor: '#ffe890',
             },
           }}
         >
@@ -256,7 +256,7 @@ function MainScreen() {
             headerTitle: "Hai dimenticato la password?",
             tabBarLabel: "Forgot Password",
             headerStyle: {
-              backgroundColor: '#FFEFAF',
+              backgroundColor: '#ffe890',
             },
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons

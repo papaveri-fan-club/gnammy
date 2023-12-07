@@ -239,7 +239,7 @@ const Register = ({ OnRegistrationComplete, updateUserData }) => {
     );
   } else {
     return (
-      <View style={[{ height: 500, color: 'orange', backgroundColor: '#FFEFAF' }]}>
+      <View style={[{ height: 500, color: 'orange', backgroundColor: '#ffe890' }]}>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: '5%' }}>
           <View style={{ width: 118, height: 150, }}>
             <Image style={{ width: 118, height: 150, marginLeft: 1 }} src={(`${domain}/img/logo.png`)} />
@@ -262,7 +262,7 @@ const Register = ({ OnRegistrationComplete, updateUserData }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFEFAF',
+    backgroundColor: '#ffe890',
     width: '100%',
     alignItems: 'center',
   },

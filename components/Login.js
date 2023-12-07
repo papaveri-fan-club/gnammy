@@ -124,7 +124,7 @@ const Login = ({ updateUserData }) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "#FFEFAF",
+    backgroundColor: "#ffe890",
     alignItems: "center",
   },
 
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     width: 327,
-    backgroundColor: "#FFEFAF",
+    backgroundColor: "#ffe890",
     color: "#d8945c",
     textAlign: "center"
   },

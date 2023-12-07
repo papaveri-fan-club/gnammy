@@ -70,7 +70,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
             return (
                 <View>
                     <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
-                    <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
+                    <View style={{ alignItems: 'center', backgroundColor: '#ffe890' }}>
                         <Recipe
                             key={index}
                             idUser={idUser}
@@ -188,7 +188,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
 
 const ProfileInformationPage = ({ user, userFavouriteRecipes }) => {
     return (
-        <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
+        <View style={{ alignItems: 'center', backgroundColor: '#ffe890' }}>
             {/* Immagine del profilo */}
             <View style={{alignItems: 'center'}}>
                 <Image source={require("../assets/user.png")} style={styles.profileImage} />
