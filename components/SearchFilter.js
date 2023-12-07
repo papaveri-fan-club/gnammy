@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { domain } from '../dns';
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+
 
 export default function SearchFilter({ setShowSearchFilter }) {
 
@@ -32,6 +33,28 @@ export default function SearchFilter({ setShowSearchFilter }) {
         ).start();
     }, []);
 
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+
+    const categories = ['Antipasti', 'Primi', 'Secondi', 'Dolci'];
+    const difficulties = ['1', '2', '3', '4', '5'];
+
+    const selectCategory = (category) => {
+        if (selectedCategory === category) {
+            setSelectedCategory(null);
+        } else {
+            setSelectedCategory(category);
+        }
+    }
+
+    const selectDifficulty = (difficulty) => {
+        if (selectedDifficulty === difficulty) {
+            setSelectedDifficulty(null);
+        } else {
+            setSelectedDifficulty(difficulty);
+        }
+    }
+
     return (
         <Animated.View style={{
             ...styles.container,
@@ -42,19 +65,46 @@ export default function SearchFilter({ setShowSearchFilter }) {
             </TouchableOpacity>
             <View>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center' }}>Categorie</Text>
-                <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Antipasti</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Primi</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Secondi</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#ffe890', borderRadius: 10, padding: 10, marginRight: 10 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Dolci</Text>
-                    </TouchableOpacity>
+                <View style={{ flexDirection: 'row', marginTop: 10, }}>
+                    {categories.map((category, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={{
+                                ...styles.category,
+                                backgroundColor: selectedCategory === category ? '#81c57bd9' : '#Ffe890',
+                                borderRadius: 10,
+                                padding: 10,
+                                marginRight: 10
+                            }}
+                            onPress={() => selectCategory(category)}
+                        >
+                            <Text style={{ fontWeight: 'bold' }}>{category}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center' }}>Difficoltà</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap', marginTop: 10, }}>
+                        {difficulties.map((difficulty, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={{
+                                    ...styles.difficulty,
+                                    backgroundColor: selectDifficulty === difficulty ? '#81c57bd9' : '#Ffe890',
+                                    borderRadius: 10,
+                                    padding: 10,
+                                    marginRight: 10,
+                                    marginBottom: 10, // Aggiungi marginBottom per creare spazio tra le righe
+                                    flexDirection: 'row',
+                                    width: difficulty === 4 || difficulty === 5 ? '45%' : '20%', // Cambia la larghezza per i riquadri di difficoltà 4 e 5
+                                }}
+                                onPress={() => selectCategory(difficulty)}
+                            >
+                                <Text style={{ fontWeight: 'bold', marginRight: 5 }}>{difficulty}</Text>
+                                <AntDesign name="staro" size={20} color="black" />
+                            </TouchableOpacity>
+                        ))}
+                    </View>
                 </View>
             </View>
         </Animated.View>
