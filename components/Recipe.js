@@ -22,7 +22,7 @@ const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipe
         alignItems: 'center',
         borderRadius: 20,
         borderWidth: 10, // Rimuovi il bordo dal container principale
-        borderColor: 'white', // Questa proprietà non è più necessaria
+        borderColor: '#f0a202', // Questa proprietà non è più necessaria
       }}
       onPress={() => navigation.navigate('recipePage', { item })}
     >
@@ -44,21 +44,19 @@ const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipe
         }}
         source={item.category === 'Primo' ? require('../assets/img_categories/primo.jpeg') : item.category === 'Secondo' ? require('../assets/img_categories/secondo2.jpeg') : item.category === 'Dolce' ? require('../assets/img_categories/dolce.jpg') : require('../assets/img_categories/antipasto.jpeg')}
       />
-
       {/* Sovrapposizione nera per scurire l'immagine */}
-      <View style={styles.overlay}></View>
+      <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)', position: 'absolute', width: '100%', height: '100%' }} />
       {/* Box come sfondo di item.category */}
       <View style={styles.categoryBackground} >
         {/* <View style={styles.UnderText}/> */}
 
-        <Text style={{ color: 'white', textAlign: 'center', fontSize: 40, fontWeight: 'bold' }}>{item.category}</Text>
-        <Text style={{ color: 'white', textAlign: 'center', fontSize: 25, fontWeight: 'bold', width: '80%' }}>{item.title}</Text>
-        <Text style={{ color: 'white', textAlign: 'center', width: '80%' }}>{item.description != undefined ? item.description.length > 100 ? item.description.slice(0, 100) + '...' : item.description : null}</Text>
-        <Text style={{ color: 'white', textAlign: 'center' }}>{item.creator_username}</Text>
-        <Text style={{ color: 'white', textAlign: 'center' }}>{item.likes + userFavouriteRecipes.includes(item.id)}</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          {isLoggedIn ? <LikeButton idUser={idUser} item={item} userFavouriteRecipes={userFavouriteRecipes} addFavouriteRecipe={addFavouriteRecipe} removeFavouriteRecipe={removeFavouriteRecipe} /> : null /* se l'utente è loggato mostra il bottone like */}
-        </View>
+        <Text style={[styles.details, { fontSize: 35, fontWeight: 'bold' }]}>{item.title}</Text>
+        <Text style={[styles.details, { fontSize: 15, fontWeight: 'bold', width: '80%' }]}>{item.description != undefined ? item.description.length > 40 ? item.description.slice(0, 37) + '...' : item.description : null}</Text>
+        <Text style={[styles.details, { width: '80%' }]}>{item.category}</Text>
+        <Text style={[styles.details, {}]}>Creator @{item.creator_username}</Text>
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 15 }}>
+        {isLoggedIn ? <LikeButton idUser={idUser} item={item} userFavouriteRecipes={userFavouriteRecipes} addFavouriteRecipe={addFavouriteRecipe} removeFavouriteRecipe={removeFavouriteRecipe} likes={item.likes + userFavouriteRecipes.includes(item.id)} /> : null /* se l'utente è loggato mostra il bottone like */}
       </View>
     </TouchableOpacity>
   );
@@ -67,9 +65,6 @@ const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipe
 const styles = StyleSheet.create({
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.4)', // Soprapposizione nera con opacità
-    position: 'absolute',
-    top: 0,
-    left: 0,
     width: '100%',
     height: '100%',
   },
@@ -77,9 +72,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     alignItems: 'center',
     borderRadius: 10,
-    position: 'absolute',
     width: '85%',
-    maxHeight: '95%',
+    maxHeight: '70%',
     blurRadius: 20,
     zIndex: 0,
   },
@@ -107,6 +101,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+  details: {
+    color: 'white',
+    textAlign: 'center',
+    padding: 5,
+  }
 });
 
 export default Recipe;

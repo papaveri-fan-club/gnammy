@@ -72,6 +72,10 @@ export default function RecipePage() {
       });
   }, [item]);
 
+  const goBack = () => {
+    navigation.goBack();
+  }
+
   console.log(ingredients);
   //aggiungi ad ogni ingrediente il proprio amount e l unit
   return (
@@ -191,7 +195,7 @@ export default function RecipePage() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFEFAF",
+    backgroundColor: "#ffe890",
     width: "100%",
   },
 
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
   },
 
   infoContainer: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
     width: "85%",
     marginTop: 20,

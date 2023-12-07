@@ -12,6 +12,7 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
+import GoBack from "./components/GoBack";
 
 import {
   storeData,
@@ -32,6 +33,7 @@ import Login from "./components/Login";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
+
 
 function MainScreen() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -106,7 +108,7 @@ function MainScreen() {
       display: tabBarVisible ? "flex" : "none",
     },
     headerStyle: {
-      backgroundColor: '#FFEFAF',
+      backgroundColor: '#ffe890',
     },
     contentStyle: {
       backgroundColor: '#264653'
@@ -116,7 +118,7 @@ function MainScreen() {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: '#FFEFAF',
+      background: '#ffe890',
       color: 'white'
     },
   };
@@ -128,7 +130,7 @@ function MainScreen() {
           options={{
             headerTitle: "",
             headerStyle: {
-              backgroundColor: '#FFEFAF',
+              backgroundColor: '#ffe890',
             },
 
             tabBarIcon: ({ color, size }) => (
@@ -236,8 +238,9 @@ function MainScreen() {
             tabBarItemStyle: { display: "none" },
             headerTitle: "",
             headerStyle: {
-              backgroundColor: '#FFEFAF',
+              backgroundColor: '#ffe890',
             },
+            headerLeft: () => <GoBack />,
           }}
         >
           {() => (
@@ -256,7 +259,7 @@ function MainScreen() {
             headerTitle: "Hai dimenticato la password?",
             tabBarLabel: "Forgot Password",
             headerStyle: {
-              backgroundColor: '#FFEFAF',
+              backgroundColor: '#ffe890',
             },
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons

@@ -6,7 +6,7 @@ import UserPage from '../components/UserRecipes';
 export default function App({ user, isLoggedIn, updateUserData, userFavouriteRecipes, setUserFavouriteRecipes }) {
 
   return (
-    <View style={{ backgroundColor: '#FFEFAF' }}>
+    <View style={{ backgroundColor: '#ffe890' }}>
       {isLoggedIn ? (
         <UserPage user={user} idUser={user.id} isLoggedIn={true} userFavouriteRecipes={userFavouriteRecipes} setUserFavouriteRecipes={setUserFavouriteRecipes} />
       ) : (
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: "100%",
-    backgroundColor: '#FFEFAF',
+    backgroundColor: '#ffe890',
   },
 
   title: {

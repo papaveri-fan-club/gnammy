@@ -32,7 +32,8 @@ const CompileRecipe = ({ recipeInitialState, recipe, setRecipe, starsSelected, s
   }, [recipe.time]);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}
+    contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <View style={{ alignItems: 'center', justifyContent: 'center', }}>
         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', paddingLeft: '25%' }}>
           <View style={{ alignItems: 'center', }}>
@@ -178,7 +179,6 @@ const CompileRecipe = ({ recipeInitialState, recipe, setRecipe, starsSelected, s
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
   square: {
     width: 20,

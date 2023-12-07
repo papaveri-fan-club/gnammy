@@ -85,7 +85,7 @@ const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearch
             styles.searchButton,
             {
               borderColor: buttonSelected === 'recipe' ? 'black' : '#f7f7f8',
-              backgroundColor: '#FFEFAF'
+              backgroundColor: '#ffe890'
             }
           ]}
         >
@@ -99,7 +99,7 @@ const SearchBar = ({ loadingTrue, loadingFalse, updateRecipes, updateUsersSearch
             {
               borderColor: buttonSelected === 'user' ? 'black' : '#f7f7f8',
               color: buttonSelected === 'user' ? 'black' : '#5A5A5A',
-              backgroundColor: '#FFEFAF'
+              backgroundColor: '#ffe890'
             }
           ]}
         >

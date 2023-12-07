@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { domain } from '../dns';
 import { Ionicons } from '@expo/vector-icons';
 
-const LikeButton = ({ idUser, item, key, userFavouriteRecipes, addFavouriteRecipe, removeFavouriteRecipe }) => {
+const LikeButton = ({ idUser, item, key, userFavouriteRecipes, addFavouriteRecipe, removeFavouriteRecipe, likes }) => {
     const idRecipe = item.id;
     const [isLiked, setIsLiked] = useState(userFavouriteRecipes.includes(idRecipe)); // Stato per memorizzare se l'utente ha aggiunto la ricetta ai preferiti
 
@@ -51,6 +51,7 @@ const LikeButton = ({ idUser, item, key, userFavouriteRecipes, addFavouriteRecip
         <View style={{height:100}} >
             <TouchableOpacity style={styles.circle} onPress={handleLike}>
                 <Ionicons name="ios-heart" size={40} color={colorHeart} />
+                <Text style={{color: 'white', position: 'absolute'}}>{likes}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -61,11 +62,10 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50 / 2,
-        backgroundColor: 'white',
+        backgroundColor: '#ffe890',
         justifyContent: 'center',
         alignItems: 'center',
     },
 });
-
 
 export default LikeButton;
