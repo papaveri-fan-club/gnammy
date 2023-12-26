@@ -4,7 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { domain } from '../dns';
 import { useState, useEffect, useRef } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
+import { set } from 'react-native-reanimated';
 
 
 export default function SearchFilter({ setShowSearchFilter }) {
@@ -35,6 +37,7 @@ export default function SearchFilter({ setShowSearchFilter }) {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+    const [selectedGLuten, setSelectedGluten] = useState('');
 
     const categories = ['Antipasti', 'Primi', 'Secondi', 'Dolci'];
     const difficulties = ['1', '2', '3', '4', '5'];
@@ -55,6 +58,18 @@ export default function SearchFilter({ setShowSearchFilter }) {
         }
     }
 
+    const selectGluten = (value) => {
+        setSelectedGluten(value);
+    };
+
+    const [isPickerShow, setIsPickerShow] = useState(false);
+    const [date, setDate] = useState(new Date());
+
+    const onChange = (event, value) => {
+        setDate(value);
+        setIsPickerShow(false);
+    };
+
     return (
         <Animated.View style={{
             ...styles.container,
@@ -64,7 +79,7 @@ export default function SearchFilter({ setShowSearchFilter }) {
                 <Ionicons name="close-outline" size={30} color="black" onPress={chiudiAnimazione} />
             </TouchableOpacity>
             <View>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center' }}>Categorie</Text>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 20, textAlign: 'center' }}>Categorie</Text>
                 <View style={{ flexDirection: 'row', marginTop: 10, }}>
                     {categories.map((category, index) => (
                         <TouchableOpacity
@@ -84,27 +99,63 @@ export default function SearchFilter({ setShowSearchFilter }) {
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center' }}>Difficoltà</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap', marginTop: 10, }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginTop: 10, }}>
                         {difficulties.map((difficulty, index) => (
                             <TouchableOpacity
                                 key={index}
                                 style={{
                                     ...styles.difficulty,
-                                    backgroundColor: selectDifficulty === difficulty ? '#81c57bd9' : '#Ffe890',
+                                    backgroundColor: selectedDifficulty === difficulty ? '#81c57bd9' : '#Ffe890',
                                     borderRadius: 10,
                                     padding: 10,
                                     marginRight: 10,
                                     marginBottom: 10, // Aggiungi marginBottom per creare spazio tra le righe
                                     flexDirection: 'row',
-                                    width: difficulty === 4 || difficulty === 5 ? '45%' : '20%', // Cambia la larghezza per i riquadri di difficoltà 4 e 5
+                                    width: difficulty === '4' || difficulty === '5' ? '28%' : '20%', // Cambia la larghezza per i riquadri di difficoltà 4 e 5
+                                    textAlign: 'center',
+                                    justifyContent: 'center',
                                 }}
-                                onPress={() => selectCategory(difficulty)}
+                                onPress={() => selectDifficulty(difficulty)}
                             >
                                 <Text style={{ fontWeight: 'bold', marginRight: 5 }}>{difficulty}</Text>
                                 <AntDesign name="staro" size={20} color="black" />
                             </TouchableOpacity>
                         ))}
                     </View>
+                </View>
+
+                <View>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center' }}>Contiene glutine</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10, }}>
+                        <TouchableOpacity style={{ backgroundColor: selectedGLuten === '1' ? '#81c57bd9' : '#Ffe890', borderRadius: 10, padding: 10, marginRight: 10, alignItems: 'center' }} onPress={() => selectGluten('1')}>
+                            <Text style={{ fontWeight: 'bold' }}>Si</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ backgroundColor: selectedGLuten === '0' ? '#d53032' : '#Ffe890', borderRadius: 10, padding: 10, marginRight: 10, alignItems: 'center' }} onPress={() => selectGluten('0')}>
+                            <Text style={{ fontWeight: 'bold' }}>No</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 30, textAlign: 'center', marginBottom: 6}}>Tempo di preparazione</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ fontWeight: 'bold' }}>Max</Text>
+                        <DateTimePicker
+                            value={date}
+                            mode={'time'}
+                            is24Hour={true}
+                            display="default"
+                            onChange={onChange}
+                            style={{ marginRight: 10 }}
+                        />
+                        <AntDesign name="clockcircleo" size={20} color="black" />
+                    </View>
+                </View>
+
+                <View>
+                    <TouchableOpacity style={{ backgroundColor: '#81c57bd9', borderRadius: 10, padding: 10, marginTop: 30, alignItems: 'center' }} onPress={chiudiAnimazione}>
+                        <Text style={{ fontWeight: 'bold' }}>Cerca</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </Animated.View>
@@ -116,11 +167,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         width: '80%',
-        height: '65%',
+        height: '78%',
         backgroundColor: 'white',
         zIndex: 1,
         borderRadius: 10,
-        top: '20%',
+        top: '17%',
         left: '10%',
         padding: 30,
         shadowColor: "#000",

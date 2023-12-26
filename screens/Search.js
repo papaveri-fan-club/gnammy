@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image, Modal } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image, Modal, Keyboard } from 'react-native';
 import SearchBar from '../components/searchBar';
 import ListCategories from '../components/ListCategories';
 import Recipes from '../components/Recipes';
@@ -20,6 +20,7 @@ import icona11 from '../assets/profileIcons/icona11.png';
 import icona12 from '../assets/profileIcons/icona12.png';
 
 import SearchFilter from '../components/SearchFilter';
+
 
 
 export default function Search({ isLoggedIn, idUser, userFavouriteRecipes, setUserFavouriteRecipes }) {
@@ -70,12 +71,17 @@ export default function Search({ isLoggedIn, idUser, userFavouriteRecipes, setUs
 
   const [showSearchFilter, setShowSearchFilter] = useState(false);
 
+  const handleSearchFilterPress = () => {
+    Keyboard.dismiss();
+    setShowSearchFilter(true);
+  };
+
   if (profileView == false) {
     return (
       <>
       {showSearchFilter && <SearchFilter setShowSearchFilter={setShowSearchFilter}/>}
       <View style={{ alignItems: 'center', paddingBottom: 110 }}>
-        <SearchBar loadingTrue={loadingTrue} loadingFalse={loadingFalse} updateRecipes={updateRecipes} updateUsersSearched={updateUsersSearched} setShowSearchFilter={setShowSearchFilter} />
+        <SearchBar loadingTrue={loadingTrue} loadingFalse={loadingFalse} updateRecipes={updateRecipes} updateUsersSearched={updateUsersSearched} setShowSearchFilter={handleSearchFilterPress} />
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
