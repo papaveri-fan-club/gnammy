@@ -63,42 +63,43 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
     const ITEM_WIDTH = width * 0.77;
     const ITEM_HEIGHT = 350;
     const scrollY = React.useRef(new Animated.Value(0)).current;
+    const scrollX = React.useRef(new Animated.Value(0)).current;
     console.log(userFavouriteRecipes.length);
 
     const renderRecipeItem = ({ item, index }) => {
-        if (index === 0) {
+        /* if (index === 0) {
             return (
                 <View>
-                    <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
-                    <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
-                        <Recipe
-                            key={index}
-                            idUser={idUser}
-                            isLoggedIn={isLoggedIn}
-                            item={item}
-                            index={index}
-                            updateRecipes={updateRecipes}
-                            recipes={recipes}
-                            userFavouriteRecipes={userFavouriteRecipes}
-                            addFavouriteRecipe={addFavouriteRecipe}
-                            removeFavouriteRecipe={removeFavouriteRecipe}
-                            ITEM_HEIGHT={ITEM_HEIGHT}
-                            ITEM_WIDTH={ITEM_WIDTH}
-                            scrollY={scrollY}
-                            height={height}
-                            inputRange={[
-                                (index - 1) * ITEM_HEIGHT,
-                                index * ITEM_HEIGHT,
-                                (index + 1) * ITEM_HEIGHT,
-                            ]}
-                        />
-                    </View>
+                <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
+                <View style={{ alignItems: 'center', backgroundColor: '#ffe890' }}>
+                <Recipe
+                key={index}
+                idUser={idUser}
+                isLoggedIn={isLoggedIn}
+                item={item}
+                index={index}
+                updateRecipes={updateRecipes}
+                recipes={recipes}
+                userFavouriteRecipes={userFavouriteRecipes}
+                addFavouriteRecipe={addFavouriteRecipe}
+                removeFavouriteRecipe={removeFavouriteRecipe}
+                ITEM_HEIGHT={ITEM_HEIGHT}
+                ITEM_WIDTH={ITEM_WIDTH}
+                scrollY={scrollY}
+                height={height}
+                inputRange={[
+                    (index - 1) * ITEM_HEIGHT,
+                    index * ITEM_HEIGHT,
+                    (index + 1) * ITEM_HEIGHT,
+                ]}
+                />
                 </View>
-            )
-        }
+                </View>
+                )
+            }  */
         if (index === recipes.length - 1) {
             return (
-                <View style={{ alignItems: 'center' }}>
+                <View style={{ alignItems: 'center', margin: 20 }}>
                     <Recipe
                         key={index}
                         idUser={idUser}
@@ -119,15 +120,16 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
                             index * ITEM_HEIGHT,
                             (index + 1) * ITEM_HEIGHT,
                         ]}
+
                     />
                     {/* <View style={{ height: 40 }}>
-                        <ActivityIndicator style={{ marginBottom: 20, alignSelf: 'center' }} animating={endRefreshing} size="large" />
-                    </View> */}
+                    <ActivityIndicator style={{ marginBottom: 20, alignSelf: 'center' }} animating={endRefreshing} size="large" />
+                </View>*/}
                 </View>
             );
         }
         return (
-            <View style={{ alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', margin: 10 }}>
                 <Recipe
                     key={index}
                     idUser={idUser}
@@ -162,13 +164,15 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
     } else {
         return (
             <View style={{ justifyContent: 'center', height: '100%' }} >
+                <ProfileInformationPage user={user} userFavouriteRecipes={userFavouriteRecipes} />
                 <Animated.FlatList
                     style={styles.container}
                     data={recipes}
                     renderItem={renderRecipeItem}
                     showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                     onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
                         { useNativeDriver: true }
                     )}
                     keyExtractor={(item, index) => index.toString()}
@@ -180,6 +184,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
                             onRefresh={onRefresh}
                         />
                     }
+                    horizontal
                 />
             </View>
         );
@@ -190,7 +195,7 @@ const ProfileInformationPage = ({ user, userFavouriteRecipes }) => {
     return (
         <View style={{ alignItems: 'center', backgroundColor: '#FFEFAF' }}>
             {/* Immagine del profilo */}
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
                 <Image source={require("../assets/user.png")} style={styles.profileImage} />
 
                 {/* Nome utente */}
@@ -257,31 +262,5 @@ const styles = StyleSheet.create({
         opacity: 0.5,
     },
 });
-//     return (
-//         <View style={styleContainer.container}>
-//             <Recipes
-//                 recipes={recipes}
-//                 updateRecipes={updateRecipes}
-//                 idUser={idUser}
-//                 isLoggedIn={isLoggedIn}
-//                 userFavouriteRecipes={userFavouriteRecipes}
-//                 setUserFavouriteRecipes={setUserFavouriteRecipes}
-//                 refreshing={refreshing}
-//                 onRefresh={onRefresh}
-//                 endRefreshing={false}
-//             />
-//         </View>
-//     );
-// }
-
-// const styleContainer = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         height: 100,
-//         width: '100%',
-//     },
-// });
 
 export default UserPage;
