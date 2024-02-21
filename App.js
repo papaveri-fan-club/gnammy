@@ -168,7 +168,7 @@ function MainScreen() {
           options={{
             tabBarLabel: "",
             tabBarIcon: ({ focused }) => (
-              <TouchableOpacity
+              <View
                 style={{
                   width: 65,
                   height: 65,
@@ -200,8 +200,9 @@ function MainScreen() {
                     </View>
                   </Animated.View>
                 </View>
-              </TouchableOpacity>
+              </View>
             ),
+            onPress: handlePress,
           }}
         >
           {() => <AddRecipes user={user} isLoggedIn={isLoggedIn} />}
