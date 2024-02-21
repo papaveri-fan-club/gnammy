@@ -178,7 +178,6 @@ const CompileRecipe = ({ recipeInitialState, recipe, setRecipe, starsSelected, s
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
   square: {
     width: 20,
