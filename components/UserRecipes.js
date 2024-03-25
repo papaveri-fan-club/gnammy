@@ -113,7 +113,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
                         removeFavouriteRecipe={removeFavouriteRecipe}
                         ITEM_HEIGHT={ITEM_HEIGHT}
                         ITEM_WIDTH={ITEM_WIDTH}
-                        scrollY={scrollY}
+                        scrollX={scrollX}
                         height={height}
                         inputRange={[
                             (index - 1) * ITEM_HEIGHT,
@@ -144,6 +144,7 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
                     ITEM_HEIGHT={ITEM_HEIGHT}
                     ITEM_WIDTH={ITEM_WIDTH}
                     scrollY={scrollY}
+                    scrollX={scrollX}
                     height={height}
                     inputRange={[
                         (index - 1) * ITEM_HEIGHT,

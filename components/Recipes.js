@@ -21,6 +21,7 @@ const Recipes = ({ recipes, updateRecipes, idUser, isLoggedIn = false, userFavou
   const ITEM_WIDTH = width * 0.77;
   const ITEM_HEIGHT = 350;
   const scrollY = React.useRef(new Animated.Value(0)).current;
+  const scrollX = new Animated.Value(0);
 
   const renderRecipeItem = ({ item, index }) => {
     if (index === recipes.length - 1) {

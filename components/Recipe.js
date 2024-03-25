@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
 import LikeButton from './LikeButton';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
-const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipes, userFavouriteRecipes, addFavouriteRecipe, removeFavouriteRecipe, ITEM_HEIGHT, ITEM_WIDTH, scrollY, inputRange, height }) => {
+
+const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipes, userFavouriteRecipes, addFavouriteRecipe, removeFavouriteRecipe, ITEM_HEIGHT, ITEM_WIDTH, scrollY, scrollX, inputRange, height }) => {
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(item.isDescriptionVisible);
   const Vheight = height / (index < 10 || parseInt(index / 10));
 
   const navigation = useNavigation();
+  const route = useRoute();
+  console.log('route', route);
 
   return (
     <TouchableOpacity
@@ -26,24 +30,44 @@ const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipe
       }}
       onPress={() => navigation.navigate('recipePage', { item })}
     >
+
       {/* Immagine con trasformazione */}
-      <Animated.Image
-        style={{
-          height: ITEM_HEIGHT * 2,
-          width: ITEM_WIDTH,
-          resizeMode: 'cover',
-          position: 'absolute',
-          transform: [
-            {
-              translateY: scrollY.interpolate({
-                inputRange,
-                outputRange: [-Vheight * 0.1, 0, Vheight * 0.1],
-              }),
-            },
-          ],
-        }}
-        source={item.category === 'Primo' ? require('../assets/img_categories/primo.jpeg') : item.category === 'Secondo' ? require('../assets/img_categories/secondo2.jpeg') : item.category === 'Dolce' ? require('../assets/img_categories/dolce.jpg') : require('../assets/img_categories/antipasto.jpeg')}
-      />
+      {route.name === 'Home' ?
+        <Animated.Image
+          style={{
+            height: ITEM_HEIGHT * 2,
+            width: ITEM_WIDTH,
+            resizeMode: 'cover',
+            position: 'absolute',
+            transform: [
+              {
+                translateY: scrollY.interpolate({
+                  inputRange,
+                  outputRange: [-Vheight * 0.1, 0, Vheight * 0.1],
+                }),
+              },
+            ],
+          }}
+          source={item.category === 'Primo' ? require('../assets/img_categories/primo.jpeg') : item.category === 'Secondo' ? require('../assets/img_categories/secondo2.jpeg') : item.category === 'Dolce' ? require('../assets/img_categories/dolce.jpg') : require('../assets/img_categories/antipasto.jpeg')}
+        />
+        :
+        <Animated.Image
+          style={{
+            height: ITEM_HEIGHT,
+            width: ITEM_WIDTH * 2,
+            resizeMode: 'cover',
+            position: 'absolute',
+            transform: [
+              {
+                translateX: scrollX.interpolate({
+                  inputRange,
+                  outputRange: [-Vheight * 0.1, 0, Vheight * 0.1],
+                }),
+              },
+            ],
+          }}
+          source={item.category === 'Primo' ? require('../assets/img_categories/primo.jpeg') : item.category === 'Secondo' ? require('../assets/img_categories/secondo2.jpeg') : item.category === 'Dolce' ? require('../assets/img_categories/dolce.jpg') : require('../assets/img_categories/antipasto.jpeg')}
+        />}
 
       {/* Sovrapposizione nera per scurire l'immagine */}
       <View style={styles.overlay}></View>
