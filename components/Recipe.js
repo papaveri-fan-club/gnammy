@@ -11,7 +11,6 @@ const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipe
 
   const navigation = useNavigation();
   const route = useRoute();
-  console.log('route', route);
 
   return (
     <TouchableOpacity
