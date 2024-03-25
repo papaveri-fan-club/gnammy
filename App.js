@@ -20,6 +20,8 @@ import {
   loginUserSavedData
 } from "./components/functions/AsyncStorage";
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import Home from "./screens/Home";
 import Account from "./screens/Account";
 import Search from "./screens/Search";
@@ -121,6 +123,7 @@ function MainScreen() {
     },
   };
   return (
+    <GestureHandlerRootView style={{flex: 1}}>
     <NavigationContainer theme={MyTheme}>
       <Tab.Navigator screenOptions={globalHeaderStyle}>
         <Tab.Screen
@@ -271,6 +274,7 @@ function MainScreen() {
 
       </Tab.Navigator>
     </NavigationContainer>
+    </GestureHandlerRootView>
 
   );
 }
