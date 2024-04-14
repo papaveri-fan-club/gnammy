@@ -47,7 +47,8 @@ const Recipes = ({ recipes, updateRecipes, idUser, isLoggedIn = false, userFavou
               index * ITEM_HEIGHT,
               (index + 1) * ITEM_HEIGHT,
             ]}
-          />
+            verse={"vertical"}
+            />
           <View style={{ height: 40 }}>
             <ActivityIndicator style={{ marginBottom: 20, alignSelf: 'center' }} animating={endRefreshing} size="large" />
           </View>
@@ -56,25 +57,26 @@ const Recipes = ({ recipes, updateRecipes, idUser, isLoggedIn = false, userFavou
     }
     return (
       <Recipe
-        key={index}
-        idUser={idUser}
-        isLoggedIn={isLoggedIn}
-        item={item}
-        index={index}
-        updateRecipes={updateRecipes}
-        recipes={recipes}
-        userFavouriteRecipes={userFavouriteRecipes}
-        addFavouriteRecipe={addFavouriteRecipe}
-        removeFavouriteRecipe={removeFavouriteRecipe}
-        ITEM_HEIGHT={ITEM_HEIGHT}
-        ITEM_WIDTH={ITEM_WIDTH}
-        scrollY={scrollY}
-        height={height}
-        inputRange={[
-          (index - 1) * ITEM_HEIGHT,
-          index * ITEM_HEIGHT,
-          (index + 1) * ITEM_HEIGHT,
-        ]}
+      key={index}
+      idUser={idUser}
+      isLoggedIn={isLoggedIn}
+      item={item}
+      index={index}
+      updateRecipes={updateRecipes}
+      recipes={recipes}
+      userFavouriteRecipes={userFavouriteRecipes}
+      addFavouriteRecipe={addFavouriteRecipe}
+      removeFavouriteRecipe={removeFavouriteRecipe}
+      ITEM_HEIGHT={ITEM_HEIGHT}
+      ITEM_WIDTH={ITEM_WIDTH}
+      scrollY={scrollY}
+      height={height}
+      inputRange={[
+        (index - 1) * ITEM_HEIGHT,
+        index * ITEM_HEIGHT,
+        (index + 1) * ITEM_HEIGHT,
+      ]}
+      verse={"vertical"}
       />
     );
   };

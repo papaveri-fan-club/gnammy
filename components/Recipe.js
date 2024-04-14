@@ -6,8 +6,7 @@ import { useRoute } from '@react-navigation/native';
 
 
 
-const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipes, userFavouriteRecipes, addFavouriteRecipe, removeFavouriteRecipe, ITEM_HEIGHT, ITEM_WIDTH, scrollY, scrollX, inputRange, height }) => {
-  const [isDescriptionVisible, setIsDescriptionVisible] = useState(item.isDescriptionVisible);
+const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipes, userFavouriteRecipes, addFavouriteRecipe, removeFavouriteRecipe, ITEM_HEIGHT, ITEM_WIDTH, scrollY, scrollX, inputRange, height, verse }) => {
   const Vheight = height / (index < 10 || parseInt(index / 10));
 
   const navigation = useNavigation();
@@ -31,7 +30,7 @@ const Recipe = ({ idUser, isLoggedIn = false, item, index, updateRecipes, recipe
       onPress={() => navigation.navigate('recipePage', { item })}
     >
       {/* Immagine con trasformazione */}
-      {route.name === 'Home' ?
+      {verse === 'vertical' ?
         <Animated.Image
           style={{
             height: ITEM_HEIGHT * 2,

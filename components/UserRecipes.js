@@ -120,8 +120,8 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
                             index * ITEM_HEIGHT,
                             (index + 1) * ITEM_HEIGHT,
                         ]}
-
-                    />
+                        verse={"horizontal"}
+                        />
                     {/* <View style={{ height: 40 }}>
                     <ActivityIndicator style={{ marginBottom: 20, alignSelf: 'center' }} animating={endRefreshing} size="large" />
                 </View>*/}
@@ -151,7 +151,8 @@ const UserPage = ({ idUser, isLoggedIn = false, userFavouriteRecipes = [0], setU
                         index * ITEM_HEIGHT,
                         (index + 1) * ITEM_HEIGHT,
                     ]}
-                />
+                    verse={"horizontal"}
+                    />
             </View>
         );
     };
