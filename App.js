@@ -123,157 +123,156 @@ function MainScreen() {
     },
   };
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-    <NavigationContainer theme={MyTheme}>
-      <Tab.Navigator screenOptions={globalHeaderStyle}>
-        <Tab.Screen
-          name="Home"
-          options={{
-            headerTitle: "",
-            headerStyle: {
-              backgroundColor: '#FFEFAF',
-            },
-
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="ios-home" color={color} size={size} />
-            ),
-            headerRight: () => <HeaderRightButton />,
-          }}
-        >
-          {() => (
-            <Home
-              user={user}
-              idUser={idUser}
-              isLoggedIn={isLoggedIn}
-              userFavouriteRecipes={userFavouriteRecipes}
-              setUserFavouriteRecipes={setUserFavouriteRecipes}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen
-          name="Search"
-          options={{
-            tabBarItemStyle: { display: "none" },
-          }}
-        >
-          {() => (
-            <Search
-              user={user}
-              idUser={idUser}
-              isLoggedIn={isLoggedIn}
-              userFavouriteRecipes={userFavouriteRecipes}
-              setUserFavouriteRecipes={setUserFavouriteRecipes}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen
-          name="AddRecipes"
-          options={{
-            tabBarLabel: "",
-            tabBarIcon: ({ focused }) => (
-              <TouchableOpacity
-                style={{
-                  width: 65,
-                  height: 65,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 25,
-                }}
-                onPress={handlePress}
-              >
-                <View style={[{ alignItems: "center" }, styles.shadow]}>
-                  <Animated.View
-                    style={{ transform: [{ rotate: rotateInterpolation }] }}
-                  >
-                    <View
-                      style={{
-                        width: 65,
-                        height: 65,
-                        borderRadius: 50,
-                        backgroundColor: "red",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer theme={MyTheme}>
+        <Tab.Navigator screenOptions={globalHeaderStyle}>
+          <Tab.Screen
+            name="Home"
+            options={{
+              headerTitle: "",
+              headerStyle: {
+                backgroundColor: '#FFEFAF',
+              },
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="ios-home" color={color} size={size} />
+              ),
+              headerRight: () => <HeaderRightButton />,
+            }}
+          >
+            {() => (
+              <Home
+                user={user}
+                idUser={idUser}
+                isLoggedIn={isLoggedIn}
+                userFavouriteRecipes={userFavouriteRecipes}
+                setUserFavouriteRecipes={setUserFavouriteRecipes}
+              />
+            )}
+          </Tab.Screen>
+          <Tab.Screen
+            name="Search"
+            options={{
+              tabBarItemStyle: { display: "none" },
+            }}
+          >
+            {() => (
+              <Search
+                user={user}
+                idUser={idUser}
+                isLoggedIn={isLoggedIn}
+                userFavouriteRecipes={userFavouriteRecipes}
+                setUserFavouriteRecipes={setUserFavouriteRecipes}
+              />
+            )}
+          </Tab.Screen>
+          <Tab.Screen
+            name="AddRecipes"
+            options={{
+              tabBarLabel: "",
+              tabBarIcon: ({ focused }) => (
+                <View
+                  style={{
+                    width: 65,
+                    height: 65,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: 25,
+                  }}
+                  onPress={handlePress}
+                >
+                  <View style={[{ alignItems: "center" }, styles.shadow]}>
+                    <Animated.View
+                      style={{ transform: [{ rotate: rotateInterpolation }] }}
                     >
-                      <MaterialCommunityIcons
-                        name="plus"
-                        color="white"
-                        size={40}
-                      />
-                    </View>
-                  </Animated.View>
+                      <View
+                        style={{
+                          width: 65,
+                          height: 65,
+                          borderRadius: 50,
+                          backgroundColor: "red",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          name="plus"
+                          color="white"
+                          size={40}
+                        />
+                      </View>
+                    </Animated.View>
+                  </View>
                 </View>
-              </TouchableOpacity>
-            ),
-          }}
-        >
-          {() => <AddRecipes user={user} isLoggedIn={isLoggedIn} />}
-        </Tab.Screen>
-        <Tab.Screen
-          name="Account"
-          options={{
-            headerTitle: user ? user.username : "",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="account"
-                size={size}
-                color={color}
+              ),
+              onPress: handlePress,
+            }}
+          >
+            {() => <AddRecipes user={user} isLoggedIn={isLoggedIn} />}
+          </Tab.Screen>
+          <Tab.Screen
+            name="Account"
+            options={{
+              headerTitle: user ? user.username : "",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  size={size}
+                  color={color}
+                />
+              ),
+              headerRight: () => isLoggedIn ? <LogOutButton setUser={setUser} setIsLoggedIn={setIsLoggedIn} setIdUser={setIdUser} /> : null,
+            }}
+          >
+            {() => (
+              <Account
+                user={user}
+                isLoggedIn={isLoggedIn}
+                updateUserData={updateUserData}
+                userFavouriteRecipes={userFavouriteRecipes}
+                setUserFavouriteRecipes={setUserFavouriteRecipes}
               />
-            ),
-            headerRight: () => isLoggedIn ? <LogOutButton setUser={setUser} setIsLoggedIn={setIsLoggedIn} setIdUser={setIdUser} /> : null,
-          }}
-        >
-          {() => (
-            <Account
-              user={user}
-              isLoggedIn={isLoggedIn}
-              updateUserData={updateUserData}
-              userFavouriteRecipes={userFavouriteRecipes}
-              setUserFavouriteRecipes={setUserFavouriteRecipes}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen
-          name="recipePage"
-          options={{
-            tabBarItemStyle: { display: "none" },
-            headerTitle: "",
-            headerStyle: {
-              backgroundColor: '#FFEFAF',
-            },
-          }}
-        >
-          {() => (
-            <RecipePage
-              user={user}
-              idUser={idUser}
-            />
-          )}
-        </Tab.Screen>
-
-
-        <Tab.Screen
-          name="ForgotPassword"
-          options={{
-            tabBarItemStyle: { display: "none" },
-            headerTitle: "Hai dimenticato la password?",
-            tabBarLabel: "Forgot Password",
-            headerStyle: {
-              backgroundColor: '#FFEFAF',
-            },
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="lock-reset"
-                color={color}
-                size={size}
+            )}
+          </Tab.Screen>
+          <Tab.Screen
+            name="recipePage"
+            options={{
+              tabBarItemStyle: { display: "none" },
+              headerTitle: "",
+              headerStyle: {
+                backgroundColor: '#FFEFAF',
+              },
+            }}
+          >
+            {() => (
+              <RecipePage
+                user={user}
+                idUser={idUser}
               />
-            ),
-          }}
-          component={ForgotPassword}
-        />
+            )}
+          </Tab.Screen>
 
-      </Tab.Navigator>
-    </NavigationContainer>
+
+          <Tab.Screen
+            name="ForgotPassword"
+            options={{
+              tabBarItemStyle: { display: "none" },
+              headerTitle: "Hai dimenticato la password?",
+              tabBarLabel: "Forgot Password",
+              headerStyle: {
+                backgroundColor: '#FFEFAF',
+              },
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="lock-reset"
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+            component={ForgotPassword}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
     </GestureHandlerRootView>
 
   );
