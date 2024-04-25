@@ -133,7 +133,6 @@ function MainScreen() {
               headerStyle: {
                 backgroundColor: '#FFEFAF',
               },
-
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-home" color={color} size={size} />
               ),
@@ -272,7 +271,6 @@ function MainScreen() {
             }}
             component={ForgotPassword}
           />
-
         </Tab.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>
